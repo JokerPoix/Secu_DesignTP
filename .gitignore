@@ -1,0 +1,10 @@
+cat > .gitignore <<'EOF'
+# Volumes Docker / données
+mysql/
+# Optionnel si tu as d'autres volumes
+node_modules/
+vendor/
+.cache/
+EOF
+mysql/*
+!mysql/.gitkeep
