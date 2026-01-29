@@ -1,31 +1,31 @@
 <?php
-session_start();
+    session_start();
 
-$mysqli = new mysqli("db", "root", "root", "secbydes");
-if ($mysqli->connect_error) {
-    die("Erreur connexion MySQL : " . $mysqli->connect_error);
-}
-
-if (isset($_GET['login']) && isset($_GET['password'])) {
-    $password_hash = '*' . strtoupper(sha1(hex2bin(sha1($_GET['password']))));
-
-    $stmt = $mysqli->prepare('SELECT * FROM users WHERE login = ? AND password = ?');
-    $stmt->bind_param("ss", $_GET['login'], $password_hash);
-    $stmt->execute();
-
-    $result = $stmt->get_result();
-
-    if ($result && $result->num_rows > 0) {
-        $_SESSION['login'] = $_GET['login'];
-        header("Location: board.php");
-        exit;
-    } else {
-        $error = "Authentification échouée";
+    $mysqli = new mysqli("db", "root", "root", "secbydes");
+    if ($mysqli->connect_error) {
+        die("Erreur connexion MySQL : " . $mysqli->connect_error);
     }
-    $stmt->close();
-}
 
-$mysqli->close();
+    if (isset($_GET['login']) && isset($_GET['password'])) {
+        $password_hash = '*' . strtoupper(sha1(hex2bin(sha1($_GET['password']))));
+
+        $stmt = $mysqli->prepare('SELECT * FROM users WHERE login = ? AND password = ?');
+        $stmt->bind_param("ss", $_GET['login'], $password_hash);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        if ($result && $result->num_rows > 0) {
+            $_SESSION['login'] = $_GET['login'];
+            header("Location: board.php");
+            exit;
+        } else {
+            $error = "Authentification échouée";
+        }
+        $stmt->close();
+    }
+
+    $mysqli->close();
 ?>
 <!doctype html>
 <html lang="fr">
